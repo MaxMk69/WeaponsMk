@@ -1,0 +1,21 @@
+{
+  "description": { "translate": "enchantment.weaponsmk.power_trident" },
+  "supported_items": ["weaponsmk:netherite_trident"],
+  "primary_items": ["weaponsmk:netherite_trident"],
+  "weight": 10,
+  "max_level": 5,
+  "min_cost": { "base": 1, "per_level_above_first": 15 },
+  "max_cost": { "base": 25, "per_level_above_first": 10 },
+  "effects": {
+    "minecraft:damage": [
+      {
+        "effect": {
+          "type": "minecraft:linear",
+          "base": 1.0,
+          "per_level_above_first": 0.5
+        }
+      }
+    ]
+  },
+  "slots": ["mainhand"]
+}
