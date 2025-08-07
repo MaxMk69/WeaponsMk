@@ -2,6 +2,7 @@ package net.maxmk.weaponsmk.entity.custom;
 
 import net.maxmk.weaponsmk.entity.ModEntities;
 import net.maxmk.weaponsmk.item.ModItems;
+import net.maxmk.weaponsmk.item.custom.NetheriteTrident;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -26,14 +27,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
 
 public class NetheriteTridentEntity extends AbstractArrow {
-    private static final EntityDataAccessor<Byte> ID_LOYALTY = SynchedEntityData.defineId(ThrownTrident.class,
-            EntityDataSerializers.BYTE);
-    private static final EntityDataAccessor<Boolean> ID_FOIL = SynchedEntityData.defineId(ThrownTrident.class,
-            EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Byte> ID_LOYALTY = SynchedEntityData.defineId(ThrownTrident.class, EntityDataSerializers.BYTE);
+    private static final EntityDataAccessor<Boolean> ID_FOIL = SynchedEntityData.defineId(ThrownTrident.class, EntityDataSerializers.BOOLEAN);
     private boolean dealtDamage;
     public int clientSideReturnTridentTickCount;
 
@@ -41,9 +41,8 @@ public class NetheriteTridentEntity extends AbstractArrow {
         super(pEntityType, pLevel);
     }
 
-    public NetheriteTridentEntity(Level level, LivingEntity shooter, ItemStack pPickupItemStack) {
-        super(ModEntities.NETHERITE_TRIDENT.get(), shooter, level, new ItemStack(ModItems.NETHERITE_TRIDENT.get()),
-                null);
+    public NetheriteTridentEntity(Level pLevel, LivingEntity pShooter, ItemStack pPickupItemStack) {
+        super(ModEntities.NETHERITE_TRIDENT.get(), pShooter, pLevel, pPickupItemStack, null);
         this.entityData.set(ID_LOYALTY, this.getLoyaltyFromItem(pPickupItemStack));
         this.entityData.set(ID_FOIL, pPickupItemStack.hasFoil());
     }
@@ -198,9 +197,7 @@ public class NetheriteTridentEntity extends AbstractArrow {
     }
 
     private byte getLoyaltyFromItem(ItemStack pStack) {
-        return this.level() instanceof ServerLevel serverlevel ? (byte)
-                Mth.clamp(EnchantmentHelper.getTridentReturnToOwnerAcceleration(serverlevel, pStack, this),
-                        0, 127) : 0;
+        return this.level() instanceof ServerLevel serverlevel ? (byte)Mth.clamp(EnchantmentHelper.getTridentReturnToOwnerAcceleration(serverlevel, pStack, this), 0, 127) : 0;
     }
 
     @Override

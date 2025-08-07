@@ -3,6 +3,7 @@ package net.maxmk.weaponsmk;
 import com.mojang.logging.LogUtils;
 import net.maxmk.weaponsmk.entity.ModEntities;
 import net.maxmk.weaponsmk.entity.client.NetheriteTridentRenderer;
+import net.maxmk.weaponsmk.entity.custom.NetheriteTridentEntity;
 import net.maxmk.weaponsmk.item.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.EntityRenderers;
@@ -48,7 +49,7 @@ public class WeaponsMk {
         ModEntities.register(modEventBus);
 
         modEventBus.addListener(this::addCreative);
-        // Register our mod's ForgeConfigSpec so that Forge can create and load the config file for us
+
         context.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 

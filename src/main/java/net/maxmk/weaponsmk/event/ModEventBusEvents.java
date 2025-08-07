@@ -10,6 +10,6 @@ import net.minecraftforge.fml.common.Mod;
 public class ModEventBusEvents {
     @SubscribeEvent
     public static void registerLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        event.registerLayerDefinition(NetheriteTridentModel.LAYER_LOCATION, NetheriteTridentModel::createLayer);
+        event.registerLayerDefinition(NetheriteTridentModel.LAYER_LOCATION, NetheriteTridentModel::createBodyLayer);
     }
 }

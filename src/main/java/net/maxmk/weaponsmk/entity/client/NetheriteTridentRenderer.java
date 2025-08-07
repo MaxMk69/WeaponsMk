@@ -14,27 +14,27 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
 public class NetheriteTridentRenderer extends EntityRenderer<NetheriteTridentEntity> {
-        private final NetheriteTridentModel model;
+    private NetheriteTridentModel model;
 
     public NetheriteTridentRenderer(EntityRendererProvider.Context pContext) {
-            super(pContext);
-            this.model = new NetheriteTridentModel(pContext.bakeLayer(NetheriteTridentModel.LAYER_LOCATION));
-        }
+        super(pContext);
+        this.model = new NetheriteTridentModel(pContext.bakeLayer(NetheriteTridentModel.LAYER_LOCATION));
+    }
+
+    @Override
+    public void render(NetheriteTridentEntity pEntity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+        poseStack.pushPose();
+        poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, pEntity.yRotO, pEntity.getYRot()) - 90.0F));
+        poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTicks, pEntity.xRotO, pEntity.getXRot()) + 90.0F));
+        VertexConsumer vertexconsumer = ItemRenderer.getFoilBufferDirect(buffer, this.model.renderType(this.getTextureLocation(pEntity)),
+                false, pEntity.isFoil());
+        this.model.renderToBuffer(poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY);
+        poseStack.popPose();
+        super.render(pEntity, entityYaw, partialTicks, poseStack, buffer, packedLight);
+    }
 
     @Override
     public ResourceLocation getTextureLocation(NetheriteTridentEntity entity) {
         return ResourceLocation.fromNamespaceAndPath(WeaponsMk.MOD_ID, "textures/entity/netherite_trident.png");
     }
-
-    public void render(NetheriteTridentEntity pEntity, float pEntityYaw, float pPartialTicks,
-                       PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) {
-            pPoseStack.pushPose();
-            pPoseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(pPartialTicks, pEntity.yRotO, pEntity.getYRot()) - 90.0F));
-            pPoseStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(pPartialTicks, pEntity.xRotO, pEntity.getXRot()) + 90.0F));
-            VertexConsumer vertexconsumer = ItemRenderer.getFoilBufferDirect(pBuffer,
-                    this.model.renderType(this.getTextureLocation(pEntity)), false, pEntity.isFoil());
-            this.model.renderToBuffer(pPoseStack, vertexconsumer, pPackedLight, OverlayTexture.NO_OVERLAY);
-            pPoseStack.popPose();
-            super.render(pEntity, pEntityYaw, pPartialTicks, pPoseStack, pBuffer, pPackedLight);
-        }
 }

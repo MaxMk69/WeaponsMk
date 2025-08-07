@@ -12,20 +12,14 @@ import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.EquipmentSlotGroup;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ThrownTrident;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ProjectileItem;
-import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.component.Tool;
 import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
@@ -37,20 +31,18 @@ import net.minecraft.world.phys.Vec3;
 import java.util.List;
 
 public class NetheriteTrident extends Item implements ProjectileItem {
-    public static final int THROW_THRESHOLD_TIME = 8;
+    public static final int THROW_THRESHOLD_TIME = 5;
     public static final float BASE_DAMAGE = 10.0F;
     public static final float SHOOT_POWER = 3F;
 
-    public NetheriteTrident(Item.Properties pProperties) {
+    public NetheriteTrident(Properties pProperties) {
         super(pProperties);
     }
 
     public static ItemAttributeModifiers createAttributes() {
         return ItemAttributeModifiers.builder()
-                .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, 10.0,
-                        AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
-                .add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, -2.9F,
-                        AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+                .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, 10.0, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+                .add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, -2.4F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
                 .build();
     }
 
@@ -70,14 +62,14 @@ public class NetheriteTrident extends Item implements ProjectileItem {
 
     @Override
     public int getUseDuration(ItemStack pStack, LivingEntity pEntity) {
-        return 64800;
+        return 72000;
     }
 
     @Override
     public void releaseUsing(ItemStack pStack, Level pLevel, LivingEntity pEntityLiving, int pTimeLeft) {
         if (pEntityLiving instanceof Player player) {
             int i = this.getUseDuration(pStack, pEntityLiving) - pTimeLeft;
-            if (i >= 8) {
+            if (i >= 10) {
                 float f = EnchantmentHelper.getTridentSpinAttackStrength(pStack, player);
                 if (!(f > 0.0F) || player.isInWaterOrRain()) {
                     if (!isTooDamagedToUse(pStack)) {
@@ -86,15 +78,13 @@ public class NetheriteTrident extends Item implements ProjectileItem {
                             pStack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(pEntityLiving.getUsedItemHand()));
                             if (f == 0.0F) {
                                 NetheriteTridentEntity netheriteTridentEntity = new NetheriteTridentEntity(pLevel, player, pStack);
-                                netheriteTridentEntity.shootFromRotation(player, player.getXRot(), player.getYRot(),
-                                        0.0F, 3F, 0.5F);
+                                netheriteTridentEntity.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 3F, 0.5F);
                                 if (player.hasInfiniteMaterials()) {
                                     netheriteTridentEntity.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
                                 }
 
                                 pLevel.addFreshEntity(netheriteTridentEntity);
-                                pLevel.playSound(null, netheriteTridentEntity, holder.value(), SoundSource.PLAYERS,
-                                        1.0F, 1.0F);
+                                pLevel.playSound(null, netheriteTridentEntity, holder.value(), SoundSource.PLAYERS, 1.0F, 1.0F);
                                 if (!player.hasInfiniteMaterials()) {
                                     player.getInventory().removeItem(pStack);
                                 }
@@ -117,9 +107,6 @@ public class NetheriteTrident extends Item implements ProjectileItem {
                             if (player.onGround()) {
                                 float f6 = 1.1999999F;
                                 player.move(MoverType.SELF, new Vec3(0.0, 1.1999999F, 0.0));
-
-
-
                             }
 
                             pLevel.playSound(null, player, holder.value(), SoundSource.PLAYERS, 1.0F, 1.0F);
@@ -143,6 +130,7 @@ public class NetheriteTrident extends Item implements ProjectileItem {
         }
     }
 
+
     private static boolean isTooDamagedToUse(ItemStack pStack) {
         return pStack.getDamageValue() >= pStack.getMaxDamage() - 1;
     }
@@ -164,8 +152,7 @@ public class NetheriteTrident extends Item implements ProjectileItem {
 
     @Override
     public Projectile asProjectile(Level pLevel, Position pPos, ItemStack pStack, Direction pDirection) {
-        NetheriteTridentEntity netheriteTridentEntity = new NetheriteTridentEntity(pLevel, pPos.x(), pPos.y(), pPos.z(),
-                pStack.copyWithCount(1));
+        NetheriteTridentEntity netheriteTridentEntity = new NetheriteTridentEntity(pLevel, pPos.x(), pPos.y(), pPos.z(), pStack.copyWithCount(1));
         netheriteTridentEntity.pickup = AbstractArrow.Pickup.ALLOWED;
         return netheriteTridentEntity;
     }

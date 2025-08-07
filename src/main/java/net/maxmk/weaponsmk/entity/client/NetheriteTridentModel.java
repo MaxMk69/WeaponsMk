@@ -5,7 +5,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.maxmk.weaponsmk.WeaponsMk;
 import net.maxmk.weaponsmk.entity.custom.NetheriteTridentEntity;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -13,20 +12,18 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 
-public class NetheriteTridentModel extends Model {
+public class NetheriteTridentModel extends EntityModel<NetheriteTridentEntity> {
     public static final ModelLayerLocation LAYER_LOCATION =
-            new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(WeaponsMk.MOD_ID, "netherite_trident_in_hand"), "main");
+            new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(WeaponsMk.MOD_ID, "netherite_trident"), "main");
     private final ModelPart netheriteTrident;
 
-    public NetheriteTridentModel(ModelPart pRoot) {
-        super(RenderType::entitySolid);
-        this.netheriteTrident = pRoot;
+    public NetheriteTridentModel(ModelPart root) {
+        this.netheriteTrident = root.getChild("netherite_trident");
     }
 
-    public static LayerDefinition createLayer() {
+    public static LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
         PartDefinition partdefinition1 = partdefinition.addOrReplaceChild(
@@ -43,6 +40,11 @@ public class NetheriteTridentModel extends Model {
                 "right_spike", CubeListBuilder.create().texOffs(4, 3).mirror().addBox(1.5F, -3.0F, -0.5F, 1.0F, 4.0F, 1.0F), PartPose.ZERO
         );
         return LayerDefinition.create(meshdefinition, 32, 32);
+    }
+
+    @Override
+    public void setupAnim(NetheriteTridentEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+
     }
 
     @Override
