@@ -44,6 +44,7 @@ public class WeaponsMk {
             event.accept(ModItems.FROST_TRIDENT);
             event.accept(ModItems.SHADOW_TRIDENT);
             event.accept(ModItems.HOLY_TRIDENT);
+            event.accept(ModItems.SOUND_TRIDENT);
         }
     }
 
@@ -51,13 +52,21 @@ public class WeaponsMk {
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
-            EntityRenderers.register(ModEntities.HOLY_TRIDENT.get(), HolyTridentRenderer::new);
-            EntityRenderers.register(ModEntities.SHADOW_TRIDENT.get(), ShadowTridentRenderer::new);
-            EntityRenderers.register(ModEntities.NETHERITE_TRIDENT.get(), NetheriteTridentRenderer::new);
-            EntityRenderers.register(ModEntities.NETHER_TRIDENT.get(), NetherTridentRenderer::new);
-            EntityRenderers.register(ModEntities.NATURE_TRIDENT.get(), NatureTridentRenderer::new);
-            EntityRenderers.register(ModEntities.FROST_TRIDENT.get(), FrostTridentRenderer::new);
-            EntityRenderers.register(ModEntities.SOUND_TRIDENT.get(), SoundTridentRenderer::new);
+            // Use truly unified renderer for all trident types
+            EntityRenderers.register(ModEntities.HOLY_TRIDENT.get(), 
+                context -> new UnifiedTridentRenderer<>(context, "holy_trident"));
+            EntityRenderers.register(ModEntities.SHADOW_TRIDENT.get(), 
+                context -> new UnifiedTridentRenderer<>(context, "shadow_trident"));
+            EntityRenderers.register(ModEntities.NETHERITE_TRIDENT.get(), 
+                context -> new UnifiedTridentRenderer<>(context, "netherite_trident"));
+            EntityRenderers.register(ModEntities.NETHER_TRIDENT.get(), 
+                context -> new UnifiedTridentRenderer<>(context, "nether_trident"));
+            EntityRenderers.register(ModEntities.NATURE_TRIDENT.get(), 
+                context -> new UnifiedTridentRenderer<>(context, "nature_trident"));
+            EntityRenderers.register(ModEntities.FROST_TRIDENT.get(), 
+                context -> new UnifiedTridentRenderer<>(context, "frost_trident"));
+            EntityRenderers.register(ModEntities.SOUND_TRIDENT.get(), 
+                context -> new UnifiedTridentRenderer<>(context, "sound_trident"));
         }
     }
 }
