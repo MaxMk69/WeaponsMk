@@ -1,6 +1,5 @@
 package net.maxmk.weaponsmk.entity.custom;
 
-import net.maxmk.weaponsmk.ModDamageTypes;
 import net.maxmk.weaponsmk.entity.ModEntities;
 import net.maxmk.weaponsmk.item.ModItems;
 import net.minecraft.core.registries.Registries;
@@ -28,6 +27,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.AABB;
 
 import javax.annotation.Nullable;
 
@@ -36,6 +36,8 @@ public class SoundTridentEntity extends AbstractArrow {
     private static final EntityDataAccessor<Boolean> ID_FOIL = SynchedEntityData.defineId(SoundTridentEntity.class, EntityDataSerializers.BOOLEAN);
     private boolean dealtDamage;
     public int clientSideReturnTridentTickCount;
+    private static final int MAX_PIERCE = 2;
+    private int piercedEntitiesCount = 0;
 
     public SoundTridentEntity(EntityType<? extends SoundTridentEntity> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -62,8 +64,14 @@ public class SoundTridentEntity extends AbstractArrow {
 
     @Override
     public void tick() {
-        if (this.inGroundTime > 4) {
+        // Set dealtDamage if we've been in ground for 4+ ticks AND pierced MORE than max enemies
+        if (this.inGroundTime > 4 && this.piercedEntitiesCount > MAX_PIERCE) {
             this.dealtDamage = true;
+        }
+
+        // Additional entity detection for closely spaced enemies (only if vanilla system hasn't found anything)
+        if (!this.dealtDamage && this.piercedEntitiesCount < MAX_PIERCE) {
+            this.checkForCloseEntities();
         }
 
         Entity entity = this.getOwner();
@@ -101,6 +109,44 @@ public class SoundTridentEntity extends AbstractArrow {
         return entity == null || !entity.isAlive() ? false : !(entity instanceof ServerPlayer) || !entity.isSpectator();
     }
 
+    /**
+     * Checks for entities that might have been missed by the vanilla collision system
+     * when enemies are very close together.
+     */
+    private void checkForCloseEntities() {
+        if (this.level().isClientSide) return;
+        
+        Vec3 currentPos = this.position();
+        Vec3 movement = this.getDeltaMovement();
+        
+        // Check more frequently and with larger radius for closely spaced enemies
+        double searchRadius = 1.5; // Increased to 1.5 block radius
+        
+        for (Entity entity : this.level().getEntities(this, 
+                new AABB(currentPos.x - searchRadius, currentPos.y - searchRadius, currentPos.z - searchRadius,
+                         currentPos.x + searchRadius, currentPos.y + searchRadius, currentPos.z + searchRadius))) {
+            
+            // Skip if we've already hit this entity or if it's not a valid target
+            if (entity == this.getOwner() || !entity.isAlive() || entity.isRemoved() || 
+                !(entity instanceof LivingEntity) || entity.getType() == EntityType.ENDERMAN) {
+                continue;
+            }
+            
+            // More aggressive distance checking - check if entity is within 1.5 blocks
+            if (this.canHitEntity(entity) && entity.distanceToSqr(this) < 2.25) { // 1.5^2 = 2.25
+                // Create a fake EntityHitResult and call onHitEntity
+                EntityHitResult hitResult = new EntityHitResult(entity);
+                this.onHitEntity(hitResult);
+                
+                if (this.dealtDamage || this.piercedEntitiesCount >= MAX_PIERCE) {
+                    break; // Stop checking if we've hit our limit
+                }
+            }
+        }
+    }
+
+
+
     public boolean isFoil() {
         return this.entityData.get(ID_FOIL);
     }
@@ -108,19 +154,27 @@ public class SoundTridentEntity extends AbstractArrow {
     @Nullable
     @Override
     protected EntityHitResult findHitEntity(Vec3 pStartVec, Vec3 pEndVec) {
-        return this.dealtDamage ? null : super.findHitEntity(pStartVec, pEndVec);
+        // Stop finding entities if we've already dealt damage
+        if (this.dealtDamage) {
+            return null;
+        }
+        
+        return super.findHitEntity(pStartVec, pEndVec);
     }
+
+
 
     @Override
     protected void onHitEntity(EntityHitResult pResult) {
         Entity entity = pResult.getEntity();
-        super.onHitEntity(pResult);
         float f = 11.0F;
         Entity owner = this.getOwner();
-        DamageSource damagesource = this.damageSources().trident(this, owner == null ? this : owner);
+        
+        // Use sonic boom damage type that bypasses armor and shields (like Warden's sonic boom)
+        DamageSource customDamageSource = this.damageSources().sonicBoom(this);
 
         if (this.level() instanceof ServerLevel serverlevel) {
-            f = EnchantmentHelper.modifyDamage(serverlevel, this.getWeaponItem(), entity, damagesource, f);
+            f = EnchantmentHelper.modifyDamage(serverlevel, this.getWeaponItem(), entity, customDamageSource, f);
         }
 
         int powerLevel = EnchantmentHelper.getItemEnchantmentLevel(
@@ -144,39 +198,35 @@ public class SoundTridentEntity extends AbstractArrow {
         } else {
             f += 0F;
         }
-
-        if (!this.level().isClientSide) {
-            DamageSource source = new DamageSource(
-                    this.level().registryAccess()
-                            .registryOrThrow(Registries.DAMAGE_TYPE)
-                            .getHolderOrThrow(ModDamageTypes.SOUND_TRIDENT), // your custom key
-                    this,
-                    entity
-            );
-
-            float damage = 11.0F;
-            entity.hurt(source, damage);
-        }
-
-        this.dealtDamage = true;
-
-        if (entity.hurt(damagesource, f)) {
+        
+        if (entity.hurt(customDamageSource, f)) {
             if (entity.getType() == EntityType.ENDERMAN) {
                 return;
             }
 
             if (this.level() instanceof ServerLevel serverlevel1) {
-                EnchantmentHelper.doPostAttackEffectsWithItemSource(serverlevel1, entity, damagesource, this.getWeaponItem());
+                EnchantmentHelper.doPostAttackEffectsWithItemSource(serverlevel1, entity, customDamageSource, this.getWeaponItem());
             }
 
             if (entity instanceof LivingEntity livingentity) {
-                this.doKnockback(livingentity, damagesource);
+                this.doKnockback(livingentity, customDamageSource);
                 this.doPostHurtEffects(livingentity);
             }
         }
 
-        this.setDeltaMovement(this.getDeltaMovement().multiply(-0.01, -0.1, -0.01));
-        this.playSound(SoundEvents.TRIDENT_HIT, 1.0F, 1.0F);
+        this.piercedEntitiesCount++;
+        
+        if (this.piercedEntitiesCount > MAX_PIERCE) {
+            // We've hit MORE than MAX_PIERCE enemies - behave like vanilla trident (bounce and stick to ground)
+            this.setDeltaMovement(this.getDeltaMovement().multiply(-0.01, -0.1, -0.01));
+            this.playSound(SoundEvents.TRIDENT_HIT, 1.0F, 1.0F);
+            // Set dealtDamage = true after hitting the 4th enemy
+            this.dealtDamage = true;
+        } else {
+            // Speed reduction for realism after each pierce
+            double speedReduction = 0.80; // Reduce by 20% each time for noticeable realism
+            this.setDeltaMovement(this.getDeltaMovement().multiply(speedReduction, speedReduction, speedReduction));
+        }
     }
 
     @Override

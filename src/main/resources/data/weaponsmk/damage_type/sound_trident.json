@@ -1,8 +1,0 @@
-{
-  "exhaustion": 0.1,
-  "message_id": "holy_trident",
-  "scaling": "when_caused_by_living_non_player",
-  "bypasses_armor": true,
-  "bypasses_shield": true,
-  "bypasses_magic": false
-}

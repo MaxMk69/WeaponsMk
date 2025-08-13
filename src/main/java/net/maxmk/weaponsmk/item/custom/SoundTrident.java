@@ -1,6 +1,5 @@
 package net.maxmk.weaponsmk.item.custom;
 
-import net.maxmk.weaponsmk.entity.custom.FrostTridentEntity;
 import net.maxmk.weaponsmk.entity.custom.SoundTridentEntity;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -10,8 +9,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
@@ -41,7 +38,7 @@ public class SoundTrident extends NetheriteTrident{
                             pStack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(pEntityLiving.getUsedItemHand()));
                             if (f == 0.0F) {
                                 SoundTridentEntity soundTridentEntity = new SoundTridentEntity(pLevel, player, pStack);
-                                soundTridentEntity.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 4F, 0.5F);
+                                soundTridentEntity.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 3F, 0.5F);
                                 if (player.hasInfiniteMaterials()) {
                                     soundTridentEntity.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
                                 }

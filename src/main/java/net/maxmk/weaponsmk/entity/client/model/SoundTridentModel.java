@@ -3,7 +3,6 @@ package net.maxmk.weaponsmk.entity.client.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.maxmk.weaponsmk.WeaponsMk;
-import net.maxmk.weaponsmk.entity.custom.FrostTridentEntity;
 import net.maxmk.weaponsmk.entity.custom.SoundTridentEntity;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;

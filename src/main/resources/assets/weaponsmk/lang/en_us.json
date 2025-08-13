@@ -16,5 +16,6 @@
   "entity.weaponsmk.shadow_trident": "Shadow Trident",
   "entity.weaponsmk.holy_trident": "Holy Trident",
 
-  "effect.weaponsmk.holy_trident_resistance": "Holy Resistance"
+  "effect.weaponsmk.holy_trident_resistance": "Holy Resistance",
+  "death.attack.sound_trident": "%1$s was pierced by music melodies"
 }
