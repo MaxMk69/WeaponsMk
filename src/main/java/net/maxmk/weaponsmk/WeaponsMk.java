@@ -1,14 +1,12 @@
 package net.maxmk.weaponsmk;
 
 import com.mojang.logging.LogUtils;
-import net.maxmk.weaponsmk.client.ModKeybinds;
 import net.maxmk.weaponsmk.entity.ModEntities;
 import net.maxmk.weaponsmk.entity.client.renderer.*;
 import net.maxmk.weaponsmk.item.ModItems;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -60,11 +58,6 @@ public class WeaponsMk {
             EntityRenderers.register(ModEntities.NATURE_TRIDENT.get(), NatureTridentRenderer::new);
             EntityRenderers.register(ModEntities.FROST_TRIDENT.get(), FrostTridentRenderer::new);
             EntityRenderers.register(ModEntities.SOUND_TRIDENT.get(), SoundTridentRenderer::new);
-        }
-        
-        @SubscribeEvent
-        public static void onKeyRegister(RegisterKeyMappingsEvent event) {
-            event.register(ModKeybinds.HOLY_TRIDENT_HEAL);
         }
     }
 }
