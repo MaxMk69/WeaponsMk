@@ -1,36 +1,22 @@
 package net.maxmk.weaponsmk;
 
 import com.mojang.logging.LogUtils;
+import net.maxmk.weaponsmk.client.ModKeybinds;
 import net.maxmk.weaponsmk.entity.ModEntities;
-import net.maxmk.weaponsmk.entity.client.NetheriteTridentRenderer;
-import net.maxmk.weaponsmk.entity.custom.NetheriteTridentEntity;
+import net.maxmk.weaponsmk.entity.client.renderer.*;
 import net.maxmk.weaponsmk.item.ModItems;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
-import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
 
 // The value here should match an entry in the META-INF/mods.toml file
@@ -42,7 +28,6 @@ public class WeaponsMk {
 
     public WeaponsMk(FMLJavaModLoadingContext context) {
         IEventBus modEventBus = context.getModEventBus();
-        modEventBus.addListener(this::commonSetup);
         MinecraftForge.EVENT_BUS.register(this);
 
         ModItems.register(modEventBus);
@@ -56,19 +41,30 @@ public class WeaponsMk {
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
         if(event.getTabKey() == CreativeModeTabs.COMBAT) {
             event.accept(ModItems.NETHERITE_TRIDENT);
+            event.accept(ModItems.NETHER_TRIDENT);
+            event.accept(ModItems.NATURE_TRIDENT);
+            event.accept(ModItems.FROST_TRIDENT);
+            event.accept(ModItems.SHADOW_TRIDENT);
+            event.accept(ModItems.HOLY_TRIDENT);
         }
-    }
-
-    private void commonSetup(final FMLCommonSetupEvent event)
-    {
-
     }
 
     @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
+            EntityRenderers.register(ModEntities.HOLY_TRIDENT.get(), HolyTridentRenderer::new);
+            EntityRenderers.register(ModEntities.SHADOW_TRIDENT.get(), ShadowTridentRenderer::new);
             EntityRenderers.register(ModEntities.NETHERITE_TRIDENT.get(), NetheriteTridentRenderer::new);
+            EntityRenderers.register(ModEntities.NETHER_TRIDENT.get(), NetherTridentRenderer::new);
+            EntityRenderers.register(ModEntities.NATURE_TRIDENT.get(), NatureTridentRenderer::new);
+            EntityRenderers.register(ModEntities.FROST_TRIDENT.get(), FrostTridentRenderer::new);
+            EntityRenderers.register(ModEntities.SOUND_TRIDENT.get(), SoundTridentRenderer::new);
+        }
+        
+        @SubscribeEvent
+        public static void onKeyRegister(RegisterKeyMappingsEvent event) {
+            event.register(ModKeybinds.HOLY_TRIDENT_HEAL);
         }
     }
 }

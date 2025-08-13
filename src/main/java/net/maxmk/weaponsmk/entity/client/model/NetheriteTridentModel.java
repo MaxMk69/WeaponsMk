@@ -1,11 +1,10 @@
-package net.maxmk.weaponsmk.entity.client;
+package net.maxmk.weaponsmk.entity.client.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.maxmk.weaponsmk.WeaponsMk;
 import net.maxmk.weaponsmk.entity.custom.NetheriteTridentEntity;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.model.TridentModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -13,7 +12,8 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.resources.ResourceLocation;
 
 public class NetheriteTridentModel extends EntityModel<NetheriteTridentEntity> {
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(WeaponsMk.MOD_ID, "netherite_trident"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION =
+            new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(WeaponsMk.MOD_ID, "netherite_trident"), "main");
     private final ModelPart netheriteTrident;
 
     public NetheriteTridentModel(ModelPart root) {

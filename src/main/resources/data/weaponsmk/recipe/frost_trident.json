@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": {
+      "item": "minecraft:nether_star"
+    },
+    "B": {
+      "item": "minecraft:snow"
+    },
+    "C": {
+      "item": "minecraft:packed_ice"
+    },
+    "E": {
+      "item": "weaponsmk:netherite_trident"
+    },
+    "F": {
+      "item": "minecraft:blue_ice"
+    }
+  },
+  "pattern": [
+    "FAF",
+    "CEC",
+    "FBF"
+  ],
+  "result": {
+    "count": 1,
+    "id": "weaponsmk:frost_trident"
+  }
+}

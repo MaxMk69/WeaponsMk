@@ -2,8 +2,6 @@ package net.maxmk.weaponsmk.entity.custom;
 
 import net.maxmk.weaponsmk.entity.ModEntities;
 import net.maxmk.weaponsmk.item.ModItems;
-import net.maxmk.weaponsmk.item.custom.NetheriteTrident;
-import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -30,24 +28,24 @@ import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 
-public class NetheriteTridentEntity extends AbstractArrow {
-    private static final EntityDataAccessor<Byte> ID_LOYALTY = SynchedEntityData.defineId(NetheriteTridentEntity.class, EntityDataSerializers.BYTE);
-    private static final EntityDataAccessor<Boolean> ID_FOIL = SynchedEntityData.defineId(NetheriteTridentEntity.class, EntityDataSerializers.BOOLEAN);
+public class NetherTridentEntity extends AbstractArrow {
+    private static final EntityDataAccessor<Byte> ID_LOYALTY = SynchedEntityData.defineId(NetherTridentEntity.class, EntityDataSerializers.BYTE);
+    private static final EntityDataAccessor<Boolean> ID_FOIL = SynchedEntityData.defineId(NetherTridentEntity.class, EntityDataSerializers.BOOLEAN);
     private boolean dealtDamage;
     public int clientSideReturnTridentTickCount;
 
-    public NetheriteTridentEntity(EntityType<? extends NetheriteTridentEntity> pEntityType, Level pLevel) {
+    public NetherTridentEntity(EntityType<? extends NetherTridentEntity> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
-    public NetheriteTridentEntity(Level pLevel, LivingEntity pShooter, ItemStack pPickupItemStack) {
-        super(ModEntities.NETHERITE_TRIDENT.get(), pShooter, pLevel, pPickupItemStack, null);
+    public NetherTridentEntity(Level pLevel, LivingEntity pShooter, ItemStack pPickupItemStack) {
+        super(ModEntities.NETHER_TRIDENT.get(), pShooter, pLevel, pPickupItemStack, null);
         this.entityData.set(ID_LOYALTY, this.getLoyaltyFromItem(pPickupItemStack));
         this.entityData.set(ID_FOIL, pPickupItemStack.hasFoil());
     }
 
-    public NetheriteTridentEntity(Level pLevel, double pX, double pY, double pZ, ItemStack pPickupItemStack) {
-        super(ModEntities.NETHERITE_TRIDENT.get(), pX, pY, pZ, pLevel, pPickupItemStack, pPickupItemStack);
+    public NetherTridentEntity(Level pLevel, double pX, double pY, double pZ, ItemStack pPickupItemStack) {
+        super(ModEntities.NETHER_TRIDENT.get(), pX, pY, pZ, pLevel, pPickupItemStack, pPickupItemStack);
         this.entityData.set(ID_LOYALTY, this.getLoyaltyFromItem(pPickupItemStack));
         this.entityData.set(ID_FOIL, pPickupItemStack.hasFoil());
     }
@@ -113,6 +111,7 @@ public class NetheriteTridentEntity extends AbstractArrow {
     @Override
     protected void onHitEntity(EntityHitResult pResult) {
         Entity entity = pResult.getEntity();
+        super.onHitEntity(pResult);
         float f = 11.0F;
         Entity owner = this.getOwner();
         DamageSource damagesource = this.damageSources().trident(this, owner == null ? this : owner);
@@ -141,6 +140,23 @@ public class NetheriteTridentEntity extends AbstractArrow {
             f -= 0.5F * (sharpnessLevel + 1);
         } else {
             f += 0F;
+        }
+
+        if (pResult.getEntity() instanceof LivingEntity target) {
+            // Ignite target for 4 seconds
+            target.igniteForSeconds(4);
+
+            // Optional: extra fire damage
+            DamageSource fireSource;
+            if (this.getOwner() instanceof Player player) {
+                fireSource = this.level().damageSources().playerAttack(player);
+            } else if (this.getOwner() instanceof LivingEntity living) {
+                fireSource = this.level().damageSources().mobAttack(living);
+            } else {
+                fireSource = this.level().damageSources().generic();
+            }
+
+            target.hurt(fireSource, 2.0F);
         }
 
         this.dealtDamage = true;
@@ -220,7 +236,7 @@ public class NetheriteTridentEntity extends AbstractArrow {
     }
 
     private byte getLoyaltyFromItem(ItemStack pStack) {
-        return this.level() instanceof ServerLevel serverlevel ? (byte)Mth.clamp(EnchantmentHelper
+        return this.level() instanceof ServerLevel serverlevel ? (byte) Mth.clamp(EnchantmentHelper
                 .getTridentReturnToOwnerAcceleration(serverlevel, pStack, this), 0, 127) : 0;
     }
 

@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": {
+      "item": "minecraft:nether_star"
+    },
+    "B": {
+      "item": "minecraft:blaze_rod"
+    },
+    "C": {
+      "item": "minecraft:blaze_powder"
+    },
+    "E": {
+      "item": "weaponsmk:netherite_trident"
+    }
+  },
+  "pattern": [
+    "CAC",
+    "BEB",
+    "CBC"
+  ],
+  "result": {
+    "count": 1,
+    "id": "weaponsmk:nether_trident"
+  }
+}

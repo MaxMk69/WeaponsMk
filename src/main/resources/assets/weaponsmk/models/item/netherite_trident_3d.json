@@ -72,9 +72,6 @@
 			}
 		}
 	],
-	"overrides": [
-		{"predicate": {"throwing": 1}, "model": "item/trident_throwing"}
-	],
 	"display": {
 		"thirdperson_righthand": {
 			"rotation": [0, 60, 0],
@@ -107,6 +104,14 @@
 			"scale": [0.5, 0.5, 0.5]
 		}
 	},
+	"overrides": [
+		{
+			"predicate": {
+				"throwing": 1
+			},
+			"model": "weaponsmk:item/netherite_trident_throwing"
+		}
+	],
 	"groups": [
 		{
 			"name": "group",

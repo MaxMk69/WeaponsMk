@@ -1,9 +1,10 @@
 {
-    "parent": "builtin/entity",
-    "gui_light": "front",
-    "textures": {
-        "particle": "weaponsmk:item/netherite_trident"
-    },
+	"format_version": "1.21.6",
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "weaponsmk:item/nether_trident_3d",
+		"particle": "weaponsmk:item/nether_trident"
+	},
 	"elements": [
 		{
 			"from": [0, 0, 0],
@@ -71,41 +72,47 @@
 			}
 		}
 	],
-    "display": {
-        "thirdperson_righthand": {
-            "rotation": [ 0, -90, 180 ],
-            "translation": [ 8, -17, 9 ],
-            "scale": [ 1, 1, 1 ]
-        },
-        "thirdperson_lefthand": {
-            "rotation": [ 0, -90, 180 ],
-            "translation": [ 8, -17, -7 ],
-            "scale": [ 1, 1, 1 ]
-        },
-        "firstperson_righthand": {
-            "rotation": [ 0, -90, 25 ],
-            "translation": [ -3, 17, 1],
-            "scale": [ 1, 1, 1 ]
-        },
-        "firstperson_lefthand": {
-            "rotation": [ 0, 90, -25 ],
-            "translation": [  13, 17, 1],
-            "scale": [ 1, 1, 1 ]
-        },
-        "gui": {
-            "rotation": [ 15, -25, -5 ],
-            "translation": [ 2, 3, 0 ],
-            "scale": [ 0.65, 0.65, 0.65 ]
-        },
-        "fixed": {
-            "rotation": [ 0, 180, 0 ],
-            "translation": [ -2, 4, -5],
-            "scale":[ 0.5, 0.5, 0.5]
-        },
-        "ground": {
-            "rotation": [ 0, 0, 0 ],
-            "translation": [ 4, 4, 2],
-            "scale":[ 0.25, 0.25, 0.25]
-        }
-    }
+	"overrides": [
+		{"predicate": {"throwing": 1}, "model": "weaponsmk:item/nether_trident_throwing"}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [0, 60, 0],
+			"translation": [11, -12, -2]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [0, 60, 0],
+			"translation": [3.5, -12, 11]
+		},
+		"firstperson_righthand": {
+			"rotation": [0, -90, 25],
+			"translation": [-3, -8.25, 8.25]
+		},
+		"firstperson_lefthand": {
+			"rotation": [0, 90, -25],
+			"translation": [12, -8.25, 8.25]
+		},
+		"ground": {
+			"translation": [4, 4, 2],
+			"scale": [0.25, 0.25, 0.25]
+		},
+		"gui": {
+			"rotation": [15, -25, -5],
+			"translation": [2, 3, 0],
+			"scale": [0.65, 0.65, 0.65]
+		},
+		"fixed": {
+			"rotation": [0, -180, 0],
+			"translation": [-2, 4, -5],
+			"scale": [0.5, 0.5, 0.5]
+		}
+	},
+	"groups": [
+		{
+			"name": "group",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [0, 1, 2, 3, 4]
+		}
+	]
 }

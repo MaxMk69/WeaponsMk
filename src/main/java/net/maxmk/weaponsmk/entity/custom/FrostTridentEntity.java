@@ -2,8 +2,6 @@ package net.maxmk.weaponsmk.entity.custom;
 
 import net.maxmk.weaponsmk.entity.ModEntities;
 import net.maxmk.weaponsmk.item.ModItems;
-import net.maxmk.weaponsmk.item.custom.NetheriteTrident;
-import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -15,6 +13,8 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -30,24 +30,24 @@ import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 
-public class NetheriteTridentEntity extends AbstractArrow {
-    private static final EntityDataAccessor<Byte> ID_LOYALTY = SynchedEntityData.defineId(NetheriteTridentEntity.class, EntityDataSerializers.BYTE);
-    private static final EntityDataAccessor<Boolean> ID_FOIL = SynchedEntityData.defineId(NetheriteTridentEntity.class, EntityDataSerializers.BOOLEAN);
+public class FrostTridentEntity extends AbstractArrow {
+    private static final EntityDataAccessor<Byte> ID_LOYALTY = SynchedEntityData.defineId(FrostTridentEntity.class, EntityDataSerializers.BYTE);
+    private static final EntityDataAccessor<Boolean> ID_FOIL = SynchedEntityData.defineId(FrostTridentEntity.class, EntityDataSerializers.BOOLEAN);
     private boolean dealtDamage;
     public int clientSideReturnTridentTickCount;
 
-    public NetheriteTridentEntity(EntityType<? extends NetheriteTridentEntity> pEntityType, Level pLevel) {
+    public FrostTridentEntity(EntityType<? extends FrostTridentEntity> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
-    public NetheriteTridentEntity(Level pLevel, LivingEntity pShooter, ItemStack pPickupItemStack) {
-        super(ModEntities.NETHERITE_TRIDENT.get(), pShooter, pLevel, pPickupItemStack, null);
+    public FrostTridentEntity(Level pLevel, LivingEntity pShooter, ItemStack pPickupItemStack) {
+        super(ModEntities.FROST_TRIDENT.get(), pShooter, pLevel, pPickupItemStack, null);
         this.entityData.set(ID_LOYALTY, this.getLoyaltyFromItem(pPickupItemStack));
         this.entityData.set(ID_FOIL, pPickupItemStack.hasFoil());
     }
 
-    public NetheriteTridentEntity(Level pLevel, double pX, double pY, double pZ, ItemStack pPickupItemStack) {
-        super(ModEntities.NETHERITE_TRIDENT.get(), pX, pY, pZ, pLevel, pPickupItemStack, pPickupItemStack);
+    public FrostTridentEntity(Level pLevel, double pX, double pY, double pZ, ItemStack pPickupItemStack) {
+        super(ModEntities.FROST_TRIDENT.get(), pX, pY, pZ, pLevel, pPickupItemStack, pPickupItemStack);
         this.entityData.set(ID_LOYALTY, this.getLoyaltyFromItem(pPickupItemStack));
         this.entityData.set(ID_FOIL, pPickupItemStack.hasFoil());
     }
@@ -69,7 +69,7 @@ public class NetheriteTridentEntity extends AbstractArrow {
         int i = this.entityData.get(ID_LOYALTY);
         if (i > 0 && (this.dealtDamage || this.isNoPhysics()) && entity != null) {
             if (!this.isAcceptibleReturnOwner()) {
-                if (!this.level().isClientSide && this.pickup == AbstractArrow.Pickup.ALLOWED) {
+                if (!this.level().isClientSide && this.pickup == Pickup.ALLOWED) {
                     this.spawnAtLocation(this.getPickupItem(), 0.1F);
                 }
 
@@ -113,6 +113,7 @@ public class NetheriteTridentEntity extends AbstractArrow {
     @Override
     protected void onHitEntity(EntityHitResult pResult) {
         Entity entity = pResult.getEntity();
+        super.onHitEntity(pResult);
         float f = 11.0F;
         Entity owner = this.getOwner();
         DamageSource damagesource = this.damageSources().trident(this, owner == null ? this : owner);
@@ -141,6 +142,15 @@ public class NetheriteTridentEntity extends AbstractArrow {
             f -= 0.5F * (sharpnessLevel + 1);
         } else {
             f += 0F;
+        }
+
+        if (pResult.getEntity() instanceof LivingEntity target) {
+            int currentFrozen = target.getTicksFrozen();
+            int newFrozen = Math.min(currentFrozen + 40, 40);
+            target.setTicksFrozen(newFrozen);
+
+            target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 40, 1));
+            target.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 40, 1));
         }
 
         this.dealtDamage = true;
@@ -191,7 +201,7 @@ public class NetheriteTridentEntity extends AbstractArrow {
 
     @Override
     protected ItemStack getDefaultPickupItem() {
-        return new ItemStack(ModItems.NETHERITE_TRIDENT.get());
+        return new ItemStack(ModItems.FROST_TRIDENT.get());
     }
 
     @Override
@@ -220,14 +230,14 @@ public class NetheriteTridentEntity extends AbstractArrow {
     }
 
     private byte getLoyaltyFromItem(ItemStack pStack) {
-        return this.level() instanceof ServerLevel serverlevel ? (byte)Mth.clamp(EnchantmentHelper
+        return this.level() instanceof ServerLevel serverlevel ? (byte) Mth.clamp(EnchantmentHelper
                 .getTridentReturnToOwnerAcceleration(serverlevel, pStack, this), 0, 127) : 0;
     }
 
     @Override
     public void tickDespawn() {
         int i = this.entityData.get(ID_LOYALTY);
-        if (this.pickup != AbstractArrow.Pickup.ALLOWED || i <= 0) {
+        if (this.pickup != Pickup.ALLOWED || i <= 0) {
             super.tickDespawn();
         }
     }

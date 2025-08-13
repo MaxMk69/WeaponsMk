@@ -2,7 +2,7 @@
     "parent": "builtin/entity",
     "gui_light": "front",
     "textures": {
-        "particle": "weaponsmk:item/netherite_trident"
+        "particle": "weaponsmk:item/nether_trident"
     },
 	"elements": [
 		{

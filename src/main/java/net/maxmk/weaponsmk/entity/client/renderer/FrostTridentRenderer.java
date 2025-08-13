@@ -1,10 +1,13 @@
-package net.maxmk.weaponsmk.entity.client;
+package net.maxmk.weaponsmk.entity.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.maxmk.weaponsmk.WeaponsMk;
-import net.maxmk.weaponsmk.entity.custom.NetheriteTridentEntity;
+import net.maxmk.weaponsmk.entity.client.model.FrostTridentModel;
+import net.maxmk.weaponsmk.entity.client.model.NatureTridentModel;
+import net.maxmk.weaponsmk.entity.custom.FrostTridentEntity;
+import net.maxmk.weaponsmk.entity.custom.NatureTridentEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -16,16 +19,17 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class NetheriteTridentRenderer extends EntityRenderer<NetheriteTridentEntity> {
-    private NetheriteTridentModel model;
+public class FrostTridentRenderer extends EntityRenderer<FrostTridentEntity> {
+    private FrostTridentModel model;
 
-    public NetheriteTridentRenderer(EntityRendererProvider.Context pContext) {
+    public FrostTridentRenderer(EntityRendererProvider.Context pContext) {
         super(pContext);
-        this.model = new NetheriteTridentModel(pContext.bakeLayer(NetheriteTridentModel.LAYER_LOCATION));
+        this.model = new FrostTridentModel(pContext.bakeLayer(FrostTridentModel.LAYER_LOCATION));
     }
 
     @Override
-    public void render(NetheriteTridentEntity pEntity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+    public void render(FrostTridentEntity pEntity, float entityYaw, float partialTicks, PoseStack poseStack,
+                       MultiBufferSource buffer, int packedLight) {
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, pEntity.yRotO, pEntity.getYRot()) - 90.0F));
         poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTicks, pEntity.xRotO, pEntity.getXRot()) + 90.0F));
@@ -36,7 +40,7 @@ public class NetheriteTridentRenderer extends EntityRenderer<NetheriteTridentEnt
     }
 
     @Override
-    public ResourceLocation getTextureLocation(NetheriteTridentEntity entity) {
-        return ResourceLocation.fromNamespaceAndPath(WeaponsMk.MOD_ID, "textures/item/netherite_trident_3d.png");
+    public ResourceLocation getTextureLocation(FrostTridentEntity entity) {
+        return ResourceLocation.fromNamespaceAndPath(WeaponsMk.MOD_ID, "textures/item/frost_trident_3d.png");
     }
 }

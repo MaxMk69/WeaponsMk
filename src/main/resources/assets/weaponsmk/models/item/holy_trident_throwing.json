@@ -1,14 +1,14 @@
 {
-    "parent": "builtin/entity",
-    "gui_light": "front",
-    "textures": {
-        "particle": "weaponsmk:item/netherite_trident"
-    },
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "weaponsmk:entity/holy_trident",
+		"particle": "weaponsmk:item/holy_trident"
+	},
 	"elements": [
 		{
-			"from": [0, 0, 0],
-			"to": [1, 31, 1],
-			"rotation": {"angle": 0, "axis": "y", "origin": [-1, 0, -1]},
+			"from": [7.5, 0, 7.5],
+			"to": [8.5, 31, 8.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [6.5, 0, 6.5]},
 			"faces": {
 				"north": {"uv": [1.5, 0.5, 2, 16], "texture": "#0"},
 				"east": {"uv": [1, 0.5, 1.5, 16], "texture": "#0"},
@@ -19,9 +19,9 @@
 			}
 		},
 		{
-			"from": [1, 25, 0],
-			"to": [2, 27, 1],
-			"rotation": {"angle": 0, "axis": "y", "origin": [1, 26, -1]},
+			"from": [8.5, 25, 7.5],
+			"to": [9.5, 27, 8.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8.5, 26, 6.5]},
 			"faces": {
 				"north": {"uv": [2.5, 0.5, 3, 1.5], "texture": "#0"},
 				"east": {"uv": [2, 0.5, 2.5, 1.5], "texture": "#0"},
@@ -32,9 +32,9 @@
 			}
 		},
 		{
-			"from": [-1, 25, 0],
-			"to": [0, 27, 1],
-			"rotation": {"angle": 0, "axis": "y", "origin": [-1, 26, -1]},
+			"from": [6.5, 25, 7.5],
+			"to": [7.5, 27, 8.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [6.5, 26, 6.5]},
 			"faces": {
 				"north": {"uv": [2.5, 0.5, 3, 1.5], "texture": "#0"},
 				"east": {"uv": [2, 0.5, 2.5, 1.5], "texture": "#0"},
@@ -45,9 +45,9 @@
 			}
 		},
 		{
-			"from": [2, 26, 0],
-			"to": [3, 30, 1],
-			"rotation": {"angle": 0, "axis": "y", "origin": [2, 27, -1]},
+			"from": [9.5, 26, 7.5],
+			"to": [10.5, 30, 8.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [9.5, 27, 6.5]},
 			"faces": {
 				"north": {"uv": [2.5, 2, 3, 4], "texture": "#0"},
 				"east": {"uv": [2, 2, 2.5, 4], "texture": "#0"},
@@ -58,9 +58,9 @@
 			}
 		},
 		{
-			"from": [-2, 26, 0],
-			"to": [-1, 30, 1],
-			"rotation": {"angle": 0, "axis": "y", "origin": [-2, 27, -1]},
+			"from": [5.5, 26, 7.5],
+			"to": [6.5, 30, 8.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [5.5, 27, 6.5]},
 			"faces": {
 				"north": {"uv": [2.5, 2, 3, 4], "texture": "#0"},
 				"east": {"uv": [2, 2, 2.5, 4], "texture": "#0"},
@@ -71,14 +71,14 @@
 			}
 		}
 	],
-    "display": {
+	"display": {
         "thirdperson_righthand": {
-            "rotation": [ 0, -90, 180 ],
+            "rotation": [ 0, 90, 180 ],
             "translation": [ 8, -17, 9 ],
             "scale": [ 1, 1, 1 ]
         },
         "thirdperson_lefthand": {
-            "rotation": [ 0, -90, 180 ],
+            "rotation": [ 0, 90, 180 ],
             "translation": [ 8, -17, -7 ],
             "scale": [ 1, 1, 1 ]
         },
