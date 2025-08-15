@@ -45,6 +45,8 @@ public class WeaponsMk {
             event.accept(ModItems.SHADOW_TRIDENT);
             event.accept(ModItems.HOLY_TRIDENT);
             event.accept(ModItems.SOUND_TRIDENT);
+            event.accept(ModItems.WIND_TRIDENT);
+            event.accept(ModItems.END_TRIDENT);
         }
     }
 
@@ -67,6 +69,10 @@ public class WeaponsMk {
                 context -> new UnifiedTridentRenderer<>(context, "frost_trident"));
             EntityRenderers.register(ModEntities.SOUND_TRIDENT.get(), 
                 context -> new UnifiedTridentRenderer<>(context, "sound_trident"));
+            EntityRenderers.register(ModEntities.WIND_TRIDENT.get(),
+                    context -> new UnifiedTridentRenderer<>(context, "wind_trident"));
+            EntityRenderers.register(ModEntities.END_TRIDENT.get(),
+                    context -> new UnifiedTridentRenderer<>(context, "end_trident"));
         }
     }
 }

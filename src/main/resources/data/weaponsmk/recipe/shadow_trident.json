@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": {
+      "item": "minecraft:nether_star"
+    },
+    "B": {
+      "item": "minecraft:ominous_banner"
+    },
+    "C": {
+      "item": "minecraft:ender_pearl"
+    },
+    "E": {
+      "item": "weaponsmk:netherite_trident"
+    },
+    "F": {
+      "item": "minecraft:obsidian"
+    }
+  },
+  "pattern": [
+    "FAF",
+    "CEC",
+    "FBF"
+  ],
+  "result": {
+    "count": 1,
+    "id": "weaponsmk:shadow_trident"
+  }
+}

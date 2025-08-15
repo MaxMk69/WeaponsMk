@@ -58,3 +58,4 @@ public class UnifiedTridentModel<T extends Entity> extends EntityModel<T> {
         trident.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
     }
 }
+

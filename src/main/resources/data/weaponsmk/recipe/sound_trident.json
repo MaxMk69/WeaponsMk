@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": {
+      "item": "minecraft:nether_star"
+    },
+    "C": {
+      "tag": "minecraft:creeper_drop_music_discs"
+    },
+    "B": {
+      "item": "minecraft:sculk_catalyst"
+    },
+    "E": {
+      "item": "weaponsmk:netherite_trident"
+    },
+    "F": {
+      "item": "minecraft:sculk_shrieker"
+    }
+  },
+  "pattern": [
+    "FAF",
+    "CEC",
+    "FBF"
+  ],
+  "result": {
+    "count": 1,
+    "id": "weaponsmk:sound_trident"
+  }
+}

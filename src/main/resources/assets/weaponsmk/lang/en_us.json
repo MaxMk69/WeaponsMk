@@ -6,6 +6,8 @@
   "item.weaponsmk.shadow_trident": "Shadow Trident",
   "item.weaponsmk.holy_trident": "Holy Trident",
   "item.weaponsmk.sound_trident": "Sound Trident",
+  "item.weaponsmk.wind_trident": "Wind Trident",
+  "item.weaponsmk.end_trident": "End Trident",
 
   "entity.weaponsmk.netherite_trident": "Netherite Trident",
   "entity.weaponsmk.nether_trident": "Nether Trident",
@@ -14,6 +16,8 @@
   "entity.weaponsmk.shadow_trident": "Shadow Trident",
   "entity.weaponsmk.holy_trident": "Holy Trident",
   "entity.weaponsmk.sound_trident": "Sound Trident",
+  "entity.weaponsmk.wind_trident": "Wind Trident",
+  "entity.weaponsmk.end_trident": "End Trident",
 
   "effect.weaponsmk.holy_trident_resistance": "Holy Resistance",
   "death.attack.sound_trident": "%1$s was pierced by music melodies"

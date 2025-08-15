@@ -84,6 +84,26 @@ public class ModItems {
                             .component(DataComponents.TOOL, SoundTrident.createToolProperties()))
             );
 
+    public static final RegistryObject<Item> END_TRIDENT =
+            ITEMS.register("end_trident",
+                    () -> new EndTrident(new Item.Properties()
+                            .rarity(Rarity.EPIC)
+                            .durability(500)
+                            .fireResistant()
+                            .attributes(EndTrident.createAttributes())
+                            .component(DataComponents.TOOL, EndTrident.createToolProperties()))
+            );
+
+    public static final RegistryObject<Item> WIND_TRIDENT =
+            ITEMS.register("wind_trident",
+                    () -> new WindTrident(new Item.Properties()
+                            .rarity(Rarity.EPIC)
+                            .durability(500)
+                            .fireResistant()
+                            .attributes(WindTrident.createAttributes())
+                            .component(DataComponents.TOOL, WindTrident.createToolProperties()))
+            );
+
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }

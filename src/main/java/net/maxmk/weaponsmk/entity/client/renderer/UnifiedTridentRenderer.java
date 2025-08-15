@@ -50,6 +50,10 @@ public class UnifiedTridentRenderer<T extends Entity> extends EntityRenderer<T> 
             isFoil = ((net.maxmk.weaponsmk.entity.custom.NetheriteTridentEntity) pEntity).isFoil();
         } else if (pEntity instanceof net.maxmk.weaponsmk.entity.custom.HolyTridentEntity) {
             isFoil = ((net.maxmk.weaponsmk.entity.custom.HolyTridentEntity) pEntity).isFoil();
+        } else if (pEntity instanceof net.maxmk.weaponsmk.entity.custom.WindTridentEntity) {
+            isFoil = ((net.maxmk.weaponsmk.entity.custom.WindTridentEntity) pEntity).isFoil();
+        } else if (pEntity instanceof net.maxmk.weaponsmk.entity.custom.EndTridentEntity) {
+            isFoil = ((net.maxmk.weaponsmk.entity.custom.EndTridentEntity) pEntity).isFoil();
         }
         
         VertexConsumer vertexconsumer = ItemRenderer.getFoilBufferDirect(buffer, this.model.renderType(this.getTextureLocation(pEntity)), false, isFoil);

@@ -90,6 +90,28 @@ public class ModEntities {
                     .fireImmune()
                     .build("sound_trident"));
 
+    public static final RegistryObject<EntityType<WindTridentEntity>> WIND_TRIDENT =
+            ENTITY_TYPES.register("wind_trident", () -> EntityType.Builder
+                    .<WindTridentEntity>of(WindTridentEntity::new,
+                            MobCategory.MISC)
+                    .sized(0.5F, 0.5F)
+                    .eyeHeight(0.13F)
+                    .clientTrackingRange(4)
+                    .updateInterval(20)
+                    .fireImmune()
+                    .build("wind_trident"));
+
+    public static final RegistryObject<EntityType<EndTridentEntity>> END_TRIDENT =
+            ENTITY_TYPES.register("end_trident", () -> EntityType.Builder
+                    .<EndTridentEntity>of(EndTridentEntity::new,
+                            MobCategory.MISC)
+                    .sized(0.5F, 0.5F)
+                    .eyeHeight(0.13F)
+                    .clientTrackingRange(4)
+                    .updateInterval(20)
+                    .fireImmune()
+                    .build("end_trident"));
+
 
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);

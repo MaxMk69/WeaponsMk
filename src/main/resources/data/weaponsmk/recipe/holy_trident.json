@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": {
+      "item": "minecraft:nether_star"
+    },
+    "B": {
+      "item": "minecraft:enchanted_golden_apple"
+    },
+    "C": {
+      "item": "minecraft:glowstone"
+    },
+    "E": {
+      "item": "weaponsmk:netherite_trident"
+    },
+    "F": {
+      "item": "minecraft:gold_block"
+    }
+  },
+  "pattern": [
+    "FAF",
+    "CEC",
+    "FBF"
+  ],
+  "result": {
+    "count": 1,
+    "id": "weaponsmk:holy_trident"
+  }
+}
