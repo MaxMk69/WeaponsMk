@@ -5,6 +5,8 @@ import net.maxmk.weaponsmk.entity.ModEntities;
 import net.maxmk.weaponsmk.entity.client.renderer.*;
 import net.maxmk.weaponsmk.item.ModItems;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
@@ -73,6 +75,16 @@ public class WeaponsMk {
                     context -> new UnifiedTridentRenderer<>(context, "wind_trident"));
             EntityRenderers.register(ModEntities.END_TRIDENT.get(),
                     context -> new UnifiedTridentRenderer<>(context, "end_trident"));
+
+            event.enqueueWork(() -> {
+                ItemProperties.register(
+                        ModItems.NETHERITE_TRIDENT.get(),
+                        ResourceLocation.fromNamespaceAndPath("weaponsmk", "throwing"),
+                        (stack, level, entity, seed) -> {
+                            return entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F;
+                        }
+                );
+            });
         }
     }
 }
